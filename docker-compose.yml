@@ -1,0 +1,27 @@
+services:
+  php:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: php
+    volumes:
+      - ./:/var/www/app
+    environment:
+      APP_ENV: dev
+    depends_on:
+      - db
+    ports:
+      - "9000:9000"
+  db:
+    image: postgres:18-alpine
+    container_name: db
+    environment:
+      POSTGRES_USER: symfony
+      POSTGRES_PASSWORD: symfony
+      POSTGRES_DB: symfony
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+volumes:
+  db_data:
