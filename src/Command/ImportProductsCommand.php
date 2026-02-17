@@ -3,7 +3,9 @@
 namespace App\Command;
 
 use App\Component\Application\ImportProductHandler;
+use App\Component\Infrastructure\Factory\ProductSourceFactory;
 use App\Component\Infrastructure\Parser\CsvProductSource;
+use App\Component\Infrastructure\Parser\XmlProductSource;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,7 +19,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ImportProductsCommand extends Command
 {
     public function __construct(
-        private readonly ImportProductHandler $handler
+        private readonly ImportProductHandler $handler,
+        private readonly ProductSourceFactory $factory,
     )
     {
         parent::__construct();
@@ -32,7 +35,7 @@ class ImportProductsCommand extends Command
     {
         $file = $input->getArgument(name: 'file');
 
-        $source = new CsvProductSource(filePath: $file);
+        $source = $this->factory->create(path: $file);
         $result = $this->handler->handle(source: $source);
 
         $output->writeln(messages: sprintf(
@@ -42,7 +45,7 @@ class ImportProductsCommand extends Command
         ));
 
         foreach ($result->getErrors() as $error) {
-            $output->writeln($error);
+            $output->writeln(messages: $error);
         }
         return Command::SUCCESS;
     }
