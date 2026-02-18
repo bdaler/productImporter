@@ -19,6 +19,7 @@
         "symfony/yaml": "8.0.*"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.94",
         "phpunit/phpunit": "^11",
         "symfony/maker-bundle": "^1.66"
     },
@@ -54,6 +55,14 @@
         "symfony/polyfill-php84": "*"
     },
     "scripts": {
+        "cs-fixer": [
+            "rm -rf .php-cs-fixer.cache",
+            "@php vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --diff --show-progress=dots --verbose"
+        ],
+        "cs-checker": [
+            "rm -rf .php-cs-fixer.cache",
+            "@php vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run --diff --show-progress=dots --verbose"
+        ],
         "run-tests": "phpunit",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
