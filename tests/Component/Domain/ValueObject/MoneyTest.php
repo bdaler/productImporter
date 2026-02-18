@@ -2,11 +2,16 @@
 
 namespace App\Tests\Component\Domain\ValueObject;
 
-use App\Component\Domain\Exception\InvalidProductPriceException;
-use App\Component\Domain\ValueObject\Money;
+use App\Domain\Exception\InvalidProductPriceException;
+use App\Domain\ValueObject\Money;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-class MoneyTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(className: Money::class)]
+final class MoneyTest extends TestCase
 {
     public function testFromRublesCreatesCorrectAmount(): void
     {
